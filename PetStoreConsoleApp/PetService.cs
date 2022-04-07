@@ -33,5 +33,16 @@ namespace PetStoreConsoleApp
                 .ThenByDescending(pet => pet.Name)
                 .ToArray();
         }
+
+        public void DisplayPets(Pet[] pets)
+        {
+            Console.WriteLine($" ----------------------------------------- ");
+            Console.WriteLine($"|{"Category",-20}|{"Pet Name",-20}|");
+            Console.WriteLine($" ----------------------------------------- ");
+            foreach (var pet in pets)
+            {
+                Console.WriteLine(pet);
+            }
+        }
     }
 }
