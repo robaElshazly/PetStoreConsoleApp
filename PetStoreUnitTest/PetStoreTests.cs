@@ -1,5 +1,6 @@
 using PetStoreConsoleApp;
 using System;
+using System.Net.Http;
 using Xunit;
 
 namespace PetStoreUnitTest
@@ -53,6 +54,20 @@ namespace PetStoreUnitTest
             };
 
             Assert.Equal(expected, sortedPets);
+        }
+    }
+
+    public class PetStoreHttpTests
+    {
+        [Fact]
+        public void GivenPetStoreAPIIsDown_WhenRequest_ExceptionIsThrown()
+        {
+            //Arrange
+            PetService petService = new PetService("https://petstore.wrongurl.io/v2/pet/");
+
+            //Act
+            //Assert
+            Assert.ThrowsAsync<HttpRequestException>(async () => { await petService.GetAvailablePetsAsync(); });
         }
     }
 }
