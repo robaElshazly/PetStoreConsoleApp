@@ -7,7 +7,10 @@
         public string Name { get; set; }
         public string[] PhotoUrls { get; set; }
         public Tag[] Tags { get; set; }
-
         public Status Status { get; set; }
+        public override string ToString()
+        {
+            return $"|{Category?.Name,-20}|{Name,-20}|";
+        }
     }
 }
