@@ -9,7 +9,11 @@ namespace PetStoreConsoleApp
 {
     public class PetService
     {
-        HttpClient client = new HttpClient { BaseAddress = new Uri("https://petstore.swagger.io/v2/pet/") };
+        HttpClient client;
+        public PetService(string baseUrl)
+        {
+            client = new HttpClient { BaseAddress = new Uri(baseUrl) };
+        }
         JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             Converters =

@@ -9,7 +9,7 @@ namespace PetStoreConsoleApp
     {     
         static async Task Main()
         {
-            var petService = new PetService();
+            var petService = new PetService("https://petstore.swagger.io/v2/pet/");
             Pet[] pets;
             try
             {
