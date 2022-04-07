@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -6,57 +7,41 @@ using System.Threading.Tasks;
 
 namespace PetStoreConsoleApp
 {
-    public class Pet
-    {
-        public long Id { get; set; }
-        public Category Category { get; set; }
-        public string Name { get; set; }
-        public string[] PhotoUrls { get; set; }
-        public Tag[] Tags { get; set; }
-
-        public Status Status { get; set; }
-    }
-
-    public class Category
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-    }
-    public class Tag
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public enum Status
-    {
-        Available,
-        Pending,
-        Sold
-    }
-
-
     class Program
     {
         static HttpClient client = new HttpClient();
-        static async Task Main()
+        static JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
-            JsonSerializerOptions options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-            {
-                Converters =
+            Converters =
                 {
                     new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
                 }
-            };
-
+        };
+        static public async Task<Pet[]> GetAvailablePetsAsync()
+        {
             var result = await client.GetAsync("https://petstore.swagger.io/v2/pet/findByStatus?status=available");
             var json = await result.Content.ReadAsStringAsync();
             var pets = JsonSerializer.Deserialize<Pet[]>(json, options);
+            return pets;
+        }
 
-            foreach (var pet in pets)
+        static public Pet[] SortPets(Pet[] pets)
+        {
+            return pets.Where(pet => pet.Category != null)
+                .OrderBy(pet => pet.Category.Name)
+                .ThenByDescending(pet => pet.Name).ToArray();
+        }
+        static async Task Main()
+        {
+            var pets = await GetAvailablePetsAsync();
+            var sortedPets = SortPets(pets);
+
+            foreach (var pet in sortedPets)
             {
-                Console.WriteLine($"Pet Name: {pet.Name}, Category:{pet.Category?.Name}");
+                Console.WriteLine($"Category:{pet.Category?.Name}, Pet Name: {pet.Name}");
             }
+
+            return;
         }
     }
 }
