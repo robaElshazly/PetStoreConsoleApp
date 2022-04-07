@@ -30,5 +30,29 @@ namespace PetStoreUnitTest
 
             Assert.Equal(expected, sortedPets);
         }
+
+        [Fact]
+        public void GivenUnsortedPets_WhenSort_PetsAreSortedByCategory()
+        {
+            //Arrange
+            var petACat1 = new Pet { Name = "A", Category = new Category { Id = 1, Name = "Cat1" } };
+            var petBCat1 = new Pet { Name = "B", Category = new Category { Id = 1, Name = "Cat1" } };
+            var petCCat2 = new Pet { Name = "C", Category = new Category { Id = 2, Name = "Cat2" } };
+
+            var pets = new Pet[]
+            {
+                petBCat1,petCCat2,petACat1
+            };
+            //Act
+            var sortedPets = petService.SortPets(pets);
+
+            //Assert
+            var expected = new Pet[]
+            {
+               petBCat1,petACat1,petCCat2
+            };
+
+            Assert.Equal(expected, sortedPets);
+        }
     }
 }
