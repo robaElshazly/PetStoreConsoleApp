@@ -9,9 +9,12 @@ This is a .Net Core console app that executes the API of https://petstore.swagge
 .Net Core 5 SDK
 
 ## How to Run The App
-* Clone this repo
-* Navigate to the repo directory
-* Then to run the app, execute the following command
+* Clone this repository using the following command
+```
+git clone https://github.com/robaElshazly/PetStoreConsoleApp.git
+```
+* Navigate to the repository directory
+* To run the app, execute the following command
 ```
 dotnet run --project PetStoreConsoleApp
 ```
